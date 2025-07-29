@@ -239,8 +239,10 @@ class EncDecCTCModelBPE(EncDecCTCModel, ASRBPEMixin):
         # sidestepping the potential overlapping tokens issue in aggregate tokenizers
         if self.tokenizer_type == "agg":
             decoder_config.vocabulary = ListConfig(vocabulary)
-        else:
+        elif isinstance(vocabulary, dict):
             decoder_config.vocabulary = ListConfig(list(vocabulary.keys()))
+        else:
+            decoder_config.vocabulary = ListConfig(vocabulary)
 
         decoder_num_classes = decoder_config['num_classes']
 
